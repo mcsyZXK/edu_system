@@ -1,16 +1,16 @@
 package com.zxk.xxxt.service;
 
-import com.zxk.xxxt.DTO.RegisterParam;
+import com.zxk.xxxt.DTO.RegisterDTO;
 import com.zxk.xxxt.POJO.Student;
 import java.util.Map;
 
 public interface StudentService {
     /**
      * 学生注册
-     * @param registerParam 注册信息
+     * @param registerDTO 注册信息
      * @return 注册结果，包含token信息
      */
-    String register(RegisterParam registerParam);
+    String register(RegisterDTO registerDTO);
 
     /**
      * 学生登录

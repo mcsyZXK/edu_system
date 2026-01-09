@@ -3,7 +3,7 @@ package com.zxk.xxxt.DTO;
 import lombok.Data;
 
 @Data
-public class LoginParam {
+public class LoginDTO {
     String unOrEmail;
     String password;
 }

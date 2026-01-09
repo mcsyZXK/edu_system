@@ -1,6 +1,6 @@
 package com.zxk.xxxt.service.impl;
 
-import com.zxk.xxxt.DTO.RegisterParam;
+import com.zxk.xxxt.DTO.RegisterDTO;
 import com.zxk.xxxt.POJO.Student;
 import com.zxk.xxxt.Utils.TokenUtils;
 import com.zxk.xxxt.mapper.StudentMapper;
@@ -24,52 +24,52 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String register(RegisterParam registerParam) {
+    public String register(RegisterDTO registerDTO) {
         // 1. 检查用户名是否已存在
-        if (registerParam.getUsername() == null || registerParam.getUsername().trim().isEmpty()) {
+        if (registerDTO.getUsername() == null || registerDTO.getUsername().trim().isEmpty()) {
             throw new RuntimeException("用户名不能为空");
         }
-        if (existsByUsername(registerParam.getUsername())) {
+        if (existsByUsername(registerDTO.getUsername())) {
             throw new RuntimeException("用户名已存在");
         }
 
         // 2. 检查邮箱是否已存在
-        if (registerParam.getEmail() == null || registerParam.getEmail().trim().isEmpty()) {
+        if (registerDTO.getEmail() == null || registerDTO.getEmail().trim().isEmpty()) {
             throw new RuntimeException("邮箱不能为空");
         }
-        if (existsByEmail(registerParam.getEmail())) {
+        if (existsByEmail(registerDTO.getEmail())) {
             throw new RuntimeException("邮箱已被注册");
         }
 
         // 3. 检查学号是否已存在
-        if (registerParam.getStudentId() == null || registerParam.getStudentId().trim().isEmpty()) {
+        if (registerDTO.getStudentId() == null || registerDTO.getStudentId().trim().isEmpty()) {
             throw new RuntimeException("学号不能为空");
         }
-        if (existsByStudentId(registerParam.getStudentId())) {
+        if (existsByStudentId(registerDTO.getStudentId())) {
             throw new RuntimeException("学号已被注册");
         }
 
         // 4. 验证验证码
-        String verifyCode = registerParam.getCode();
+        String verifyCode = registerDTO.getCode();
         if (verifyCode == null || verifyCode.trim().isEmpty()) {
             throw new RuntimeException("验证码不能为空");
         }
-        boolean verified = verifyCodeService.verifyCode(registerParam.getEmail(), verifyCode);
+        boolean verified = verifyCodeService.verifyCode(registerDTO.getEmail(), verifyCode);
         if (!verified) {
             throw new RuntimeException("验证码错误或已过期");
         }
 
         // 5. 创建学生对象并设置信息
         Student student = new Student();
-        student.setUsername(registerParam.getUsername());
-        student.setStudentId(registerParam.getStudentId());
-        student.setEmail(registerParam.getEmail());
+        student.setUsername(registerDTO.getUsername());
+        student.setStudentId(registerDTO.getStudentId());
+        student.setEmail(registerDTO.getEmail());
         
         // 6. 加密密码
-        if (registerParam.getPassword() == null || registerParam.getPassword().trim().isEmpty()) {
+        if (registerDTO.getPassword() == null || registerDTO.getPassword().trim().isEmpty()) {
             throw new RuntimeException("密码不能为空");
         }
-        student.setPassword(passwordEncoder.encode(registerParam.getPassword()));
+        student.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 
         // 7. 设置默认状态为正常
         student.setStatus((byte) 1);

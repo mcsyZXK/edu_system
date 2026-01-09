@@ -1,7 +1,7 @@
 package com.zxk.xxxt.controller;
 
-import com.zxk.xxxt.DTO.LoginParam;
-import com.zxk.xxxt.DTO.RegisterParam;
+import com.zxk.xxxt.DTO.LoginDTO;
+import com.zxk.xxxt.DTO.RegisterDTO;
 import com.alibaba.fastjson.JSONObject;
 import com.zxk.xxxt.POJO.Student;
 import com.zxk.xxxt.Utils.JsonUtils;
@@ -30,9 +30,9 @@ public class StudentController {
      */
     @PostMapping("/register")
     @NotLogin
-    public JSONObject register(@RequestBody RegisterParam registerParam) {
+    public JSONObject register(@RequestBody RegisterDTO registerDTO) {
         try {
-            String result = studentService.register(registerParam);
+            String result = studentService.register(registerDTO);
             return JsonUtils.success(result);
         } catch (Exception e) {
             return JsonUtils.fail(e.getMessage());
@@ -58,10 +58,10 @@ public class StudentController {
      */
     @PostMapping("/login")
     @NotLogin
-    public JSONObject login(@RequestBody LoginParam loginParam) {
+    public JSONObject login(@RequestBody LoginDTO loginDTO) {
         try {
-            String username = loginParam.getUnOrEmail();
-            String password = loginParam.getPassword();
+            String username = loginDTO.getUnOrEmail();
+            String password = loginDTO.getPassword();
 
             if (username == null || password == null) {
                 return JsonUtils.fail("用户名和密码不能为空");

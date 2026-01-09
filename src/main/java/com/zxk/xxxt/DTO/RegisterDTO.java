@@ -6,7 +6,7 @@ import lombok.Data;
  * 学生注册参数
  */
 @Data
-public class RegisterParam {
+public class RegisterDTO {
     /**
      * 用户名
      */
