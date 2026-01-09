@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxk.xxxt.mapper.VerifyCodeMapper">
+  <resultMap id="BaseResultMap" type="com.zxk.xxxt.POJO.VerifyCode">
+    <!--@mbg.generated-->
+    <!--@Table verify_code-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, email, code, created_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from verify_code
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from verify_code
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zxk.xxxt.POJO.VerifyCode" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_code (email, code, created_at
+      )
+    values (#{email,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zxk.xxxt.POJO.VerifyCode" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="email != null">
+        email,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zxk.xxxt.POJO.VerifyCode">
+    <!--@mbg.generated-->
+    update verify_code
+    <set>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zxk.xxxt.POJO.VerifyCode">
+    <!--@mbg.generated-->
+    update verify_code
+    set email = #{email,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 统计指定时间内某邮箱的验证码发送次数 -->
+  <select id="countByEmailAfterTime" resultType="int">
+    SELECT COUNT(*)
+    FROM verify_code
+    WHERE email = #{email}
+    AND created_at &gt; #{afterTime}
+  </select>
+  <!-- 根据邮箱查找最新的验证码 -->
+  <select id="selectLatestByEmail" resultMap="BaseResultMap">
+    SELECT email, code, created_at
+    FROM verify_code
+    WHERE email = #{email}
+    ORDER BY created_at DESC
+    LIMIT 1
+  </select>
+</mapper>
