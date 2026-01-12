@@ -18,6 +18,14 @@ spring:
     path-match:
       matching-strategy: ant_path_matcher
     static-path-pattern: /static/**
+  
+  # 文件上传配置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB  # 单个文件最大大小
+      max-request-size: 50MB  # 请求最大大小
+      file-size-threshold: 2KB  # 文件写入磁盘的阈值
 
   web:
     resources:
@@ -43,9 +51,9 @@ mybatis-plus:
 
 # 服务器配置
 server:
-  port: 8080
+  port: 4096
   servlet:
-    context-path: /api
+    context-path: /zxk
   tomcat:
     uri-encoding: UTF-8
 
