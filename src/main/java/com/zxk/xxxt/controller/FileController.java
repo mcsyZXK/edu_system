@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,14 +30,21 @@ public class FileController {
     /**
      * 文件访问基础路径（根据实际部署情况调整）
      */
-    private static final String FILE_BASE_URL = "D:/uploads";
+    private static final String FILE_BASE_URL = "/zxk/file/download";
 
     /**
      * 上传文件
+     * 需要token认证，从Header中获取Authorization: Bearer {token}
      */
     @PostMapping("/upload")
     public JSONObject uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         try {
+            // 获取当前登录用户信息（JWT拦截器已验证token并将用户信息存入request）
+            // 如果需要记录上传者，可以使用以下代码获取userId
+            // @SuppressWarnings("unchecked")
+            // Map<String, String> currentUser = (Map<String, String>) request.getAttribute("currentUser");
+            // String userId = currentUser != null ? currentUser.get("userId") : null;
+            
             // 验证文件是否为空
             if (file == null || file.isEmpty()) {
                 return JsonUtils.fail("文件不能为空");
