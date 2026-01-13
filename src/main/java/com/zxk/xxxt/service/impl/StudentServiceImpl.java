@@ -74,13 +74,16 @@ public class StudentServiceImpl implements StudentService {
         // 7. 设置默认状态为正常
         student.setStatus((byte) 1);
 
-        // 8. 设置创建时间和更新时间（Unix时间戳，单位：秒）
+        // 8. 设置默认信誉分为100
+        student.setCreditScore(100);
+
+        // 9. 设置创建时间和更新时间（Unix时间戳，单位：秒）
         long currentTime = System.currentTimeMillis() / 1000;  // 转换为秒
         student.setCreateTime(currentTime);
         student.setUpdateTime(currentTime);
         student.setDeleteTime(0L);  // 默认未删除
 
-        // 9. 插入数据库
+        // 10. 插入数据库
         int result = studentMapper.insertSelective(student);
         if (result <= 0) {
             throw new RuntimeException("注册失败");
@@ -202,6 +205,14 @@ public class StudentServiceImpl implements StudentService {
             Student existing = studentMapper.selectByStudentId(student.getStudentId());
             if (existing != null && !existing.getId().equals(student.getId())) {
                 throw new RuntimeException("学号已被使用");
+            }
+        }
+
+        // 如果更新了信誉分，验证范围（0-200）
+        if (student.getCreditScore() != null) {
+            Integer creditScore = student.getCreditScore();
+            if (creditScore < 0 || creditScore > 200) {
+                throw new RuntimeException("信誉分必须在0-200之间");
             }
         }
 

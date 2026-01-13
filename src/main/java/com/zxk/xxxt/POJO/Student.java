@@ -64,14 +64,19 @@ public class Student {
     private String grade;
 
     /**
-    * 状态：0-禁用，1-正常
-    */
+     * 状态：0-禁用，1-正常
+     */
     @TableField("status")
     private Byte status;  // 数据库字段仍然是Byte
 
     /**
-    * 创建时间（Unix时间戳，单位：秒）
-    */
+     * 信誉分：范围0-200，默认100
+     */
+    private Integer creditScore;
+
+    /**
+     * 创建时间（Unix时间戳，单位：秒）
+     */
     private Long createTime;
 
     /**
