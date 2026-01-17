@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public JSONObject jsonParamsException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
-        List errorList = new ArrayList();
+        List<String> errorList = new ArrayList<>();
 
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             String msg = String.format("%s%s；", fieldError.getField(), fieldError.getDefaultMessage());
