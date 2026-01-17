@@ -45,7 +45,7 @@ public class JsonUtils {
         return map;
     }
 
-    public static JSONObject successPage(IPage iPage){
+    public static JSONObject successPage(IPage<?> iPage){
         JSONObject map = new JSONObject();
         map.put("errcode",0);
         map.put("errmsg","成功");
@@ -55,7 +55,7 @@ public class JsonUtils {
         return map;
     }
 
-    public static JSONObject success(JSONObject map,IPage iPage){
+    public static JSONObject success(JSONObject map,IPage<?> iPage){
         map.put("errcode",0);
         map.put("errmsg","成功");
         map.put("list",iPage.getRecords());
